@@ -1,0 +1,39 @@
+<nz-page-header (nzBack)="onBack()" nzBackIcon class="site-page-header" nzTitle="Cliente" [nzSubtitle]="subtitulo"></nz-page-header>
+<app-error [error]="error"></app-error>
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="nombre">Nombre</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Por favor ingrese un nombre de cliente!">
+            <input nz-input formControlName="nombre" id="nombre" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="identificador">Cedula/Ruc</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Por favor ingrese cedula o ruc valida!">
+            <input nz-input formControlName="identificador" id="identificador" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="direccion">Dirección</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Por favor ingrese una direccion!">
+            <input nz-input formControlName="direccion" id="direccion" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="telefono">Teléfono</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Por favor ingrese un teléfono!">
+            <input nz-input formControlName="telefono" id="telefono" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">Email</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Por favor ingrese un email!">
+            <input nz-input formControlName="email" id="email" />
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button [nzLoading]="cargando" nz-button nzType="primary">Guardar</button>
+        </nz-form-control>
+    </nz-form-item>
+</form>

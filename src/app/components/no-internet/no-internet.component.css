@@ -1,0 +1,15 @@
+.no-internet-result {
+    width: 100%!important;
+    text-align: center;
+}
+
+.no-internet-result .result {
+    width: 60%!important;
+    text-align: center;
+    margin: auto;
+    line-height: 1.2!important;
+}
+
+.ant-result-title {
+    line-height: 1.2!important;
+}

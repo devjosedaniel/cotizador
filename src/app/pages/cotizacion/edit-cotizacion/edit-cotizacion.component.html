@@ -1,0 +1,78 @@
+<nz-page-header (nzBack)="onBack()" nzBackIcon class="site-page-header" nzTitle="Cotización" [nzSubtitle]="subtitulo"></nz-page-header>
+<app-error [error]="error"></app-error>
+<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="nombre">Fecha</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Por favor ingrese una fecha!">
+            <nz-date-picker formControlName="fecha" id="fecha"></nz-date-picker>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="nombre">Cliente</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Por favor nombre de cliente !">
+            <div class="example-input">
+                <input placeholder="Nombre de cliente" nz-input formControlName="nombre" id="nombre" (ngModelChange)="onChange($event)" [nzAutocomplete]="auto" />
+                <nz-autocomplete #auto>
+                    <nz-auto-option *ngFor="let data of filteredOptions" (click)="seleccionado(data)" [nzValue]="data.nombre">{{data.nombre}}</nz-auto-option>
+                </nz-autocomplete>
+            </div>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="identificador">Cedula/Ruc</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Por favor ingrese cedula o ruc valida!">
+            <input #identificador nz-input formControlName="identificador" id="identificador" />
+            <a nz-button (click)="consumidorFinal()" nzType="link">Consumidor final</a>
+        </nz-form-control>
+    </nz-form-item>
+    <div nz-row>
+        <div nz-col [nzSpan]="14" [nzOffset]="6">
+            <nz-table [nzSize]="'small'" [nzFooter]="footer" [nzShowPagination]="false" [nzData]="[{}]" #editRowTable nzBordered>
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Detalle</th>
+                        <th>Cantidad</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody formArrayName="detalles">
+                    <tr [formGroupName]="i" *ngFor="let control of detalles.controls; let i = index">
+                        <td>
+                            <nz-form-control nzErrorTip="Por favor seleccione un producto!">
+                                <nz-select formControlName="producto" nzAllowClear nzPlaceHolder="Eligir producto" nzShowSearch>
+                                    <nz-option-group *ngFor="let cat of productosCategorizados" [nzLabel]="cat.nombre">
+                                        <nz-option *ngFor="let prod of cat.productos" [nzValue]="prod.id" [nzLabel]="prod.nombre"></nz-option>
+                                    </nz-option-group>
+                                </nz-select>
+                            </nz-form-control>
+                        </td>
+                        <td>
+                            <nz-form-control nzErrorTip="Por favor ingrese una descripcion corta!">
+                                <input class="input-descripcion" nz-input formControlName="descripcion" id="descripcion" />
+                            </nz-form-control>
+                        </td>
+                        <td>
+                            <nz-form-control nzErrorTip="Por favor ingrese una cantidad mayor a 0!">
+                                <nz-input-number class="input-numero" formControlName="cantidad" [nzMin]="1" [nzStep]="1"></nz-input-number>
+                            </nz-form-control>
+
+                        </td>
+                        <td>
+                            <i (click)="eliminarDetalle(i)" nz-icon nzType="delete" class="dynamic-delete-button"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+
+    <ng-template #footer>
+        <button (click)="agregarDetalles()" nz-button nzType="default" type="button">Agregar producto</button>
+    </ng-template>
+    <nz-form-item nz-row class="register-area">
+        <nz-form-control [nzSpan]="14" [nzOffset]="6">
+            <button [nzLoading]="cargando" nz-button nzType="primary">Guardar</button>
+        </nz-form-control>
+    </nz-form-item>
+</form>

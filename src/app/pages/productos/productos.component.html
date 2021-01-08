@@ -1,0 +1,47 @@
+<nz-page-header class="site-page-header" nzTitle="Productos" nzSubtitle="Listado de productos"></nz-page-header>
+
+<div class="table-operations">
+    <button nz-button (click)="nuevo()">Agregar</button>
+
+</div>
+<nz-table [nzLoading]="cargando" #nzTable [nzData]="listOfDisplayData" nzTableLayout="fixed">
+    <thead>
+        <tr>
+            <!-- <th>#</th> -->
+            <th nzCustomFilter>
+                Nombre
+                <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
+                    <i nz-icon nzType="search"></i>
+                </nz-filter-trigger>
+            </th>
+            <th>Precio</th>
+            <th>Categoria</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let producto of nzTable.data; let i = index">
+            <!-- <td>{{ i+1}}</td> -->
+            <td>{{ producto.nombre }}</td>
+            <td align="right">$ {{ producto.precio }}</td>
+            <td>{{producto.categoria.nombre}}
+                <nz-badge *ngIf="producto.categoria.estado === 0" nzStatus="error" nzText="eliminada"></nz-badge>
+            </td>
+            <td>
+                <button (click)="edit(producto.id)" nz-button>Detalle</button>
+                <button nz-popconfirm nzPopconfirmTitle="Seguro quieres eliminar?" (nzOnConfirm)="eliminar(producto.id)" nz-button>Eliminar</button>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+<nz-dropdown-menu #menu="nzDropdownMenu">
+    <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+            <input type="text" nz-input placeholder="Buscar nombre" [(ngModel)]="searchValue" />
+            <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+            Buscar
+          </button>
+            <button nz-button nzSize="small" (click)="reset()">Limpiar</button>
+        </div>
+    </div>
+</nz-dropdown-menu>
