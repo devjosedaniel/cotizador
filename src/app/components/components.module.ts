@@ -20,6 +20,9 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { NzTagModule } from 'ng-zorro-antd/tag';
 @NgModule({
   declarations: [ErrorComponent, NoInternetComponent],
   imports: [
@@ -49,7 +52,10 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
     NzDividerModule,
     NzInputNumberModule,
     NzBadgeModule,
-    NzDatePickerModule
+    NzDatePickerModule,
+    NzCheckboxModule,
+    NzTypographyModule,
+    NzTagModule
   ]
 })
 export class ComponentsModule { }

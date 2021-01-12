@@ -4,7 +4,7 @@
     <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="nombre">Fecha</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Por favor ingrese una fecha!">
-            <nz-date-picker formControlName="fecha" id="fecha"></nz-date-picker>
+            <nz-date-picker [nzFormat]="dateFormat" formControlName="fecha" id="fecha"></nz-date-picker>
         </nz-form-control>
     </nz-form-item>
     <nz-form-item>
@@ -15,6 +15,7 @@
                 <nz-autocomplete #auto>
                     <nz-auto-option *ngFor="let data of filteredOptions" (click)="seleccionado(data)" [nzValue]="data.nombre">{{data.nombre}}</nz-auto-option>
                 </nz-autocomplete>
+                <span *ngIf="clienteSeleccionado.id>0" nz-typography nzType="success"><strong>Cliente: {{clienteSeleccionado.nombre}} </strong> <i style="cursor: pointer;" (click)="quitarClienteSeleccionado()" nz-icon nzType="close-circle" nzTheme="outline"></i></span>
             </div>
         </nz-form-control>
     </nz-form-item>
@@ -22,7 +23,8 @@
         <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="identificador">Cedula/Ruc</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Por favor ingrese cedula o ruc valida!">
             <input #identificador nz-input formControlName="identificador" id="identificador" />
-            <a nz-button (click)="consumidorFinal()" nzType="link">Consumidor final</a>
+            <!-- <a nz-button (click)="consumidorFinal()" nzType="link">Consumidor final <i nz-icon nzType="arrow-up" nzTheme="outline"></i></a> -->
+            <label formControlName="final" nz-checkbox (click)="consumidorFinal()">Consumidor final</label>
         </nz-form-control>
     </nz-form-item>
     <div nz-row>
@@ -33,14 +35,16 @@
                         <th>Producto</th>
                         <th>Detalle</th>
                         <th>Cantidad</th>
-                        <th>Action</th>
+                        <th>Iva</th>
+                        <th>Valor unit.</th>
+                        <th>Acción</th>
                     </tr>
                 </thead>
                 <tbody formArrayName="detalles">
                     <tr [formGroupName]="i" *ngFor="let control of detalles.controls; let i = index">
                         <td>
                             <nz-form-control nzErrorTip="Por favor seleccione un producto!">
-                                <nz-select formControlName="producto" nzAllowClear nzPlaceHolder="Eligir producto" nzShowSearch>
+                                <nz-select (ngModelChange)="actualizarValor($event, i)" formControlName="producto" nzAllowClear nzPlaceHolder="Eligir producto" nzShowSearch>
                                     <nz-option-group *ngFor="let cat of productosCategorizados" [nzLabel]="cat.nombre">
                                         <nz-option *ngFor="let prod of cat.productos" [nzValue]="prod.id" [nzLabel]="prod.nombre"></nz-option>
                                     </nz-option-group>
@@ -54,9 +58,17 @@
                         </td>
                         <td>
                             <nz-form-control nzErrorTip="Por favor ingrese una cantidad mayor a 0!">
-                                <nz-input-number class="input-numero" formControlName="cantidad" [nzMin]="1" [nzStep]="1"></nz-input-number>
+                                <nz-input-number (ngModelChange)="actualizarValor($event,i)" class="input-numero" formControlName="cantidad" [nzMin]="1" [nzStep]="1"></nz-input-number>
                             </nz-form-control>
 
+                        </td>
+                        <td>
+                            <nz-select (ngModelChange)="actualizarValor($event,i)" class="input-porcentaje" formControlName="iva">
+                                <nz-option *ngFor="let porc of porcetantajesIva" [nzValue]="porc" nzLabel="{{porc}} %"></nz-option>
+                            </nz-select>
+                        </td>
+                        <td>
+                            <nz-input-number [nzFormatter]="formatterDollar" [nzParser]="parserDollar" [nzDisabled]="true" class="input-numero" formControlName="valor" [nzMin]="1" [nzStep]="1"></nz-input-number>
                         </td>
                         <td>
                             <i (click)="eliminarDetalle(i)" nz-icon nzType="delete" class="dynamic-delete-button"></i>
@@ -64,12 +76,60 @@
                     </tr>
                 </tbody>
             </nz-table>
+            <!-- <nz-table [nzBordered]="false" nzSize="small" [nzShowPagination]="false" [nzData]="[{}]">
+                <tbody>
+                    <tr class="detalle-tabla">
+                        <td>Subtotal</td>
+                        <td align="right">
+                            <nz-input-number [nzFormatter]="formatterDollar" [nzParser]="parserDollar" [nzDisabled]="true" formControlName="subtotal"></nz-input-number>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Iva 12%</td>
+                        <td align="right">
+                            <nz-input-number [nzFormatter]="formatterDollar" [nzParser]="parserDollar" [nzDisabled]="true" formControlName="iva12"></nz-input-number>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Total</td>
+                        <td align="right">
+                            <nz-input-number [nzFormatter]="formatterDollar" [nzParser]="parserDollar" [nzDisabled]="true" formControlName="total"></nz-input-number>
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table> -->
         </div>
     </div>
 
     <ng-template #footer>
         <button (click)="agregarDetalles()" nz-button nzType="default" type="button">Agregar producto</button>
     </ng-template>
+
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="nombre">Subtotal</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="No se obtuvo el subtotal!">
+            <nz-input-number [nzFormatter]="formatterDollar" [nzParser]="parserDollar" [nzDisabled]="true" formControlName="subtotal"></nz-input-number>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="nombre">Descuento (-) </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Por favor seleccione un tipo de descuento!">
+            <nz-input-number style="margin-right: 10px;" [nzDisabled]="true" [nzMin]="0" [nzStep]="1" formControlName="valordescuento" [nzFormatter]="formatterDollar" [nzParser]="parserDollar"></nz-input-number>
+            <nz-input-number (ngModelChange)="obtenerResultados()" [nzMin]="1" [nzStep]="1" formControlName="descuento" [nzFormatter]="formatterPercent" [nzParser]="parserPercent"></nz-input-number>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="nombre">Iva 12% (+) </nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="No se obtuvo el valor del iva!">
+            <nz-input-number [nzFormatter]="formatterDollar" [nzParser]="parserDollar" [nzDisabled]="true" formControlName="iva12"></nz-input-number>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="nombre">Total</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="No se obtuvo el total!">
+            <nz-input-number [nzFormatter]="formatterDollar" [nzParser]="parserDollar" [nzDisabled]="true" formControlName="total"></nz-input-number>
+        </nz-form-control>
+    </nz-form-item>
     <nz-form-item nz-row class="register-area">
         <nz-form-control [nzSpan]="14" [nzOffset]="6">
             <button [nzLoading]="cargando" nz-button nzType="primary">Guardar</button>

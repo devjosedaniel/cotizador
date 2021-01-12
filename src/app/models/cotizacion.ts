@@ -10,7 +10,7 @@ export class Cotizacion extends Model {
   fecha: Date;
   nombre: string;
   identificador: string;
-  cliente?: Cliente;
+  cliente?: Cliente | null;
   detalles: Detalle[];
 }
 

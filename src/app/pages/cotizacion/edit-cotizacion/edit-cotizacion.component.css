@@ -1,22 +1,12 @@
-nz-date-picker {
-    /* margin: 0 8px 12px 0; */
-}
-
-nz-select {
-    /* width: 120px; */
-    /* width: 100%; */
-}
-
-nz-input-number {
-    /* width: 100%; */
-    /* width: 120px; */
-}
-
 .input-descripcion {
     width: 180px;
 }
 
 .input-numero {
+    width: 80px;
+}
+
+.input-porcentaje {
     width: 80px;
 }
 
