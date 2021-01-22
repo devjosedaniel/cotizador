@@ -9,7 +9,7 @@
     </nz-form-item>
     <nz-form-item nz-row class="register-area">
         <nz-form-control [nzSpan]="14" [nzOffset]="6">
-            <button [nzLoading]="cargando" nz-button nzType="primary">Guardar</button>
+            <button [disabled]="cargando" [nzLoading]="cargando" nz-button nzType="primary">Guardar</button>
         </nz-form-control>
     </nz-form-item>
 </form>

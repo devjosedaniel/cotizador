@@ -261,8 +261,12 @@ export class EditCotizacionComponent implements OnInit {
     }
   }
   descargar(){
+    this.cargando = true;
     this.cotiSrv.generarPdf(this.cotizacion.id).subscribe( res => {
+      this.cargando = false;
       this.configDescarga(res);
+    }, err => {
+      this.cargando = false;
     });
   }
   configDescarga(data){

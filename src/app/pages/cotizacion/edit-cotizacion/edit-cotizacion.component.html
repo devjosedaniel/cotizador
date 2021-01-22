@@ -192,7 +192,7 @@
     </div>
     <nz-form-item style="margin-top: 15px;">
         <nz-form-control nz-col [nzSpan]="20" [nzOffset]="6">
-            <button (click)="descargar()" nz-button nzType="primary"><i nz-icon nzType="download"></i>Descargar</button>
+            <button [disabled]="cargando" [nzLoading]="cargando" (click)="descargar()" nz-button nzType="primary"><i nz-icon nzType="download"></i>Descargar</button>
         </nz-form-control>
     </nz-form-item>
 </div>
