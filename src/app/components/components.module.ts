@@ -23,6 +23,7 @@ import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzGridModule } from 'ng-zorro-antd/grid';
 @NgModule({
   declarations: [ErrorComponent, NoInternetComponent],
   imports: [
@@ -55,7 +56,8 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
     NzDatePickerModule,
     NzCheckboxModule,
     NzTypographyModule,
-    NzTagModule
+    NzTagModule,
+    NzGridModule
   ]
 })
 export class ComponentsModule { }

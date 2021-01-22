@@ -10,7 +10,7 @@ import { EditProductoComponent } from './pages/productos/edit-producto/edit-prod
 import { EditCotizacionComponent } from './pages/cotizacion/edit-cotizacion/edit-cotizacion.component';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: '/welcome' },
+  { path: '', pathMatch: 'full', redirectTo: '/cotizacion' },
   { path: 'cotizacion', component: CotizacionComponent },
   { path: 'cotizacion/:id', component: EditCotizacionComponent },
   { path: 'cliente', component: ClienteComponent },

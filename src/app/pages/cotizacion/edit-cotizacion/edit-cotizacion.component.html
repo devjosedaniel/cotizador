@@ -1,6 +1,6 @@
 <nz-page-header (nzBack)="onBack()" nzBackIcon class="site-page-header" nzTitle="Cotización" [nzSubtitle]="subtitulo"></nz-page-header>
 <app-error [error]="error"></app-error>
-<form nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
+<form *ngIf="id === 'nuevo'" nz-form [formGroup]="validateForm" (ngSubmit)="submitForm()">
     <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="nombre">Fecha</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Por favor ingrese una fecha!">
@@ -37,14 +37,14 @@
                         <th>Cantidad</th>
                         <th>Iva</th>
                         <th>Valor unit.</th>
-                        <th>Acción</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody formArrayName="detalles">
                     <tr [formGroupName]="i" *ngFor="let control of detalles.controls; let i = index">
                         <td>
                             <nz-form-control nzErrorTip="Por favor seleccione un producto!">
-                                <nz-select (ngModelChange)="actualizarValor($event, i)" formControlName="producto" nzAllowClear nzPlaceHolder="Eligir producto" nzShowSearch>
+                                <nz-select (ngModelChange)="actualizarValor($event, i)" formControlName="producto_id" nzAllowClear nzPlaceHolder="Eligir producto" nzShowSearch>
                                     <nz-option-group *ngFor="let cat of productosCategorizados" [nzLabel]="cat.nombre">
                                         <nz-option *ngFor="let prod of cat.productos" [nzValue]="prod.id" [nzLabel]="prod.nombre"></nz-option>
                                     </nz-option-group>
@@ -68,7 +68,7 @@
                             </nz-select>
                         </td>
                         <td>
-                            <nz-input-number [nzFormatter]="formatterDollar" [nzParser]="parserDollar" [nzDisabled]="true" class="input-numero" formControlName="valor" [nzMin]="1" [nzStep]="1"></nz-input-number>
+                            <nz-input-number [nzFormatter]="formatterDollar" [nzParser]="parserDollar" [nzDisabled]="true" class="input-numero" formControlName="valorunitario" [nzMin]="1" [nzStep]="1"></nz-input-number>
                         </td>
                         <td>
                             <i (click)="eliminarDetalle(i)" nz-icon nzType="delete" class="dynamic-delete-button"></i>
@@ -108,26 +108,26 @@
     <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="nombre">Subtotal</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="No se obtuvo el subtotal!">
-            <nz-input-number [nzFormatter]="formatterDollar" [nzParser]="parserDollar" [nzDisabled]="true" formControlName="subtotal"></nz-input-number>
+            <nz-input-number [nzFormatter]="formatterDollar" [nzParser]="parserDollar" [nzDisabled]="true" formControlName="valorsubtotal"></nz-input-number>
         </nz-form-control>
     </nz-form-item>
     <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="nombre">Descuento (-) </nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Por favor seleccione un tipo de descuento!">
             <nz-input-number style="margin-right: 10px;" [nzDisabled]="true" [nzMin]="0" [nzStep]="1" formControlName="valordescuento" [nzFormatter]="formatterDollar" [nzParser]="parserDollar"></nz-input-number>
-            <nz-input-number (ngModelChange)="obtenerResultados()" [nzMin]="1" [nzStep]="1" formControlName="descuento" [nzFormatter]="formatterPercent" [nzParser]="parserPercent"></nz-input-number>
+            <nz-input-number (ngModelChange)="obtenerResultados()" [nzMin]="0" [nzStep]="1" formControlName="descuento" [nzFormatter]="formatterPercent" [nzParser]="parserPercent"></nz-input-number>
         </nz-form-control>
     </nz-form-item>
     <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="nombre">Iva 12% (+) </nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="No se obtuvo el valor del iva!">
-            <nz-input-number [nzFormatter]="formatterDollar" [nzParser]="parserDollar" [nzDisabled]="true" formControlName="iva12"></nz-input-number>
+            <nz-input-number [nzFormatter]="formatterDollar" [nzParser]="parserDollar" [nzDisabled]="true" formControlName="valoriva"></nz-input-number>
         </nz-form-control>
     </nz-form-item>
     <nz-form-item>
         <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="nombre">Total</nz-form-label>
         <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="No se obtuvo el total!">
-            <nz-input-number [nzFormatter]="formatterDollar" [nzParser]="parserDollar" [nzDisabled]="true" formControlName="total"></nz-input-number>
+            <nz-input-number [nzFormatter]="formatterDollar" [nzParser]="parserDollar" [nzDisabled]="true" formControlName="valortotal"></nz-input-number>
         </nz-form-control>
     </nz-form-item>
     <nz-form-item nz-row class="register-area">
@@ -136,3 +136,63 @@
         </nz-form-control>
     </nz-form-item>
 </form>
+
+<div nz-form *ngIf="cotizacion && cotizacion.id>0">
+    <nz-form-item nz-row>
+        <nz-form-label nz-col [nzSm]="6" [nzXs]="24">Fecha</nz-form-label>
+        <nz-form-control nz-col [nzSm]="14" [nzXs]="24">{{cotizacion.fecha}}</nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row>
+        <nz-form-label nz-col [nzSm]="6" [nzXs]="24">Cliente</nz-form-label>
+        <nz-form-control nz-col [nzSm]="14" [nzXs]="24">{{cotizacion.cliente.nombre}}</nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row>
+        <nz-form-label nz-col [nzSm]="6" [nzXs]="24">Cedula/Ruc</nz-form-label>
+        <nz-form-control nz-col [nzSm]="14" [nzXs]="24">{{cotizacion.cliente.identificador}}</nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row>
+        <nz-form-label nz-col [nzSm]="6" [nzXs]="24">Subtotal</nz-form-label>
+        <nz-form-control nz-col [nzSm]="14" [nzXs]="24">$ {{cotizacion.valorsubtotal}}</nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row *ngIf="cotizacion.valordescuento > 0">
+        <nz-form-label nz-col [nzSm]="6" [nzXs]="24">Descuento {{cotizacion.descuento | number}}%</nz-form-label>
+        <nz-form-control nz-col [nzSm]="14" [nzXs]="24">$ {{cotizacion.valordescuento}}</nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row>
+        <nz-form-label nz-col [nzSm]="6" [nzXs]="24">Iva 12%</nz-form-label>
+        <nz-form-control nz-col [nzSm]="14" [nzXs]="24">$ {{cotizacion.valoriva}}</nz-form-control>
+    </nz-form-item>
+    <nz-form-item nz-row>
+        <nz-form-label nz-col [nzSm]="6" [nzXs]="24">Total</nz-form-label>
+        <nz-form-control nz-col [nzSm]="14" [nzXs]="24">$ {{cotizacion.valortotal}}</nz-form-control>
+    </nz-form-item>
+    <div nz-row>
+        <div nz-col [nzSpan]="20" [nzOffset]="6">
+            <nz-table [nzSize]="'small'" [nzShowPagination]="false" [nzData]="cotizacion.detalles" #detalleTable nzBordered>
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Detalle</th>
+                        <th>Cantidad</th>
+                        <th>Iva</th>
+                        <th>Valor unit.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let data of detalleTable.data">
+                        <td>{{data.producto.nombre}}</td>
+                        <td>{{data.descripcion}}</td>
+                        <td align="right">{{data.cantidad}}</td>
+                        <td align="right">{{data.iva}}%</td>
+                        <td align="right">$ {{data.valorunitario}}</td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+    <nz-form-item style="margin-top: 15px;">
+        <nz-form-control nz-col [nzSpan]="20" [nzOffset]="6">
+            <button (click)="descargar()" nz-button nzType="primary"><i nz-icon nzType="download"></i>Descargar</button>
+        </nz-form-control>
+    </nz-form-item>
+</div>

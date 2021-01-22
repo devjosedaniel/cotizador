@@ -14,6 +14,7 @@
                     <i nz-icon nzType="search"></i>
                 </nz-filter-trigger> -->
             </th>
+            <th>Número</th>
             <th>Cliente</th>
             <th>Estado</th>
             <th>Valor</th>
@@ -24,11 +25,12 @@
         <tr *ngFor="let cotizacion of nzTable.data; let i = index">
             <!-- <td>{{ i+1}}</td> -->
             <td>{{ cotizacion.fecha }}</td>
+            <td>{{ cotizacion.secuencia }}</td>
             <td>{{cotizacion.cliente.nombre}}</td>
             <td>
                 <nz-tag *ngIf="cotizacion.anulado === true || cotizacion.anulado === 1" [nzColor]="'#f50'">Anulado</nz-tag>
             </td>
-            <td align="right">$100</td>
+            <td align="right">$ {{cotizacion.valortotal}}</td>
             <td>
                 <button (click)="edit(cotizacion.id)" nz-button>Detalle</button>
                 <button nz-popconfirm nzPopconfirmTitle="Seguro quieres eliminar?" (nzOnConfirm)="eliminar(cotizacion.id)" nz-button>Eliminar</button>

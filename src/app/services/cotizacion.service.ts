@@ -26,4 +26,7 @@ export class CotizacionService {
   actualizar(cotizacion: Cotizacion): Observable<any> {
     return this.http.put(`${urlApi}/${cotizacion.id}`, cotizacion);
   }
+  generarPdf(id){
+    return this.http.get(`${urlApi}/${id}/pdf`, { responseType: 'blob'});
+  }
 }

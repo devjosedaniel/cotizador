@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  url: 'http://cotizador.test/'
+  url: 'https://devdesignec.com/trabajos/cotizador/public/'
 };

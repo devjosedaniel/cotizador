@@ -64,7 +64,7 @@ export class EditCotizacionComponent implements OnInit {
       if (this.id === 'nuevo') {
         this.agregarDetalles();
       } else {
-        this.subtitulo = 'Actualizar cotización';
+        this.subtitulo = 'Detalle cotización';
         this.getCotizacion();
       }
     });
@@ -126,11 +126,9 @@ export class EditCotizacionComponent implements OnInit {
     this.cotizacion = this.validateForm.value;
     this.cotizacion.id = this.id;
     this.cotizacion.cliente = this.clienteSeleccionado;
-    console.log(this.cotizacion);
     if (this.id === 'nuevo') {
       this.cotiSrv.guardar(this.cotizacion).subscribe(res => {
         this.cargando = false;
-        console.log(res);
         if (res.ok === true) {
           this.notification.create(
             'success', 'Correcto', res.mensaje
@@ -138,7 +136,6 @@ export class EditCotizacionComponent implements OnInit {
           this.route.navigateByUrl('/cotizacion');
         }
       }, (err: HttpErrorResponse) => {
-        console.log('err', err);
         this.cargando = false;
         if (err.status === 422) {
           this.error = err.error;
@@ -165,11 +162,11 @@ export class EditCotizacionComponent implements OnInit {
       identificador: [this.cotizacion.cliente.identificador, [Validators.required]],
       final: [false],
       detalles: this.fb.array([]),
-      subtotal: [''],
+      valorsubtotal: [''],
       descuento: [0],
       valordescuento: [''],
-      iva12: [''],
-      total: ['']
+      valoriva: [''],
+      valortotal: ['']
     });
   }
   seleccionado(cliente: Cliente): void {
@@ -191,10 +188,10 @@ export class EditCotizacionComponent implements OnInit {
   }
   agregarDetalles(): void {
     this.detalles.push(this.fb.group({
-      producto: [null, [Validators.required]],
+      producto_id: [null, [Validators.required]],
       cantidad: [1, [Validators.required, Validators.min(1)]],
       descripcion: [null, [Validators.maxLength(20)]],
-      valor: ['', [Validators.required]],
+      valorunitario: ['', [Validators.required]],
       iva: [12, [Validators.required]]
     }));
   }
@@ -206,8 +203,8 @@ export class EditCotizacionComponent implements OnInit {
 
   }
   actualizarValor(value: string, i: number): void {
-    const idproducto = this.detalles.controls[i].get('producto');
-    const valor = this.detalles.controls[i].get('valor');
+    const idproducto = this.detalles.controls[i].get('producto_id');
+    const valor = this.detalles.controls[i].get('valorunitario');
     const cantidad = this.detalles.controls[i].get('cantidad');
     if(idproducto.value>0 || idproducto.value!=null){
       const prod = this.productos.find(p => p.id === idproducto.value);
@@ -225,16 +222,15 @@ export class EditCotizacionComponent implements OnInit {
     this.valor_iva12 = 0.00;
     this.valor_total = 0.00;
     this.valor_descuento = 0.00;
-    const subtotal = this.validateForm.get('subtotal');
-    const total = this.validateForm.get('total');
-    const iva12 = this.validateForm.get('iva12');
-    const iva0 = this.validateForm.get('iva0');
+    const subtotal = this.validateForm.get('valorsubtotal');
+    const total = this.validateForm.get('valortotal');
+    const iva12 = this.validateForm.get('valoriva');
     const desc = this.validateForm.get('descuento');
     const vdesc = this.validateForm.get('valordescuento');
     Object.values(this.detalles.controls).forEach(control => {
-      const v: number = parseFloat(control.value.valor);
+      const v: number = parseFloat(control.value.valorunitario);
       const c: number = control.value.cantidad;
-      if (control.value.producto > 0 || control.value.producto != null){
+      if (control.value.producto_id > 0 || control.value.producto_id != null){
         if(control.value.iva === 12){
           this.valor_iva12 = this.redondearValores(this.valor_iva12 + ( (v*c) * (control.value.iva/100) ));
         }
@@ -262,6 +258,20 @@ export class EditCotizacionComponent implements OnInit {
       }
     }else{
       return 0.00;
+    }
+  }
+  descargar(){
+    this.cotiSrv.generarPdf(this.cotizacion.id).subscribe( res => {
+      this.configDescarga(res);
+    });
+  }
+  configDescarga(data){
+    if(data){
+      const url = window.URL.createObjectURL(data);
+      const anchor = document.createElement('a');
+      anchor.download = 'cotizacion.pdf';
+      anchor.href = url;
+      anchor.click();
     }
   }
 }
