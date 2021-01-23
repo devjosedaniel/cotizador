@@ -14,8 +14,8 @@
                     <i nz-icon nzType="search"></i>
                 </nz-filter-trigger>
             </th>
-            <th>Precio</th>
             <th>Categoria</th>
+            <th>Precio</th>
             <th></th>
         </tr>
     </thead>
@@ -23,10 +23,10 @@
         <tr *ngFor="let producto of nzTable.data; let i = index">
             <!-- <td>{{ i+1}}</td> -->
             <td>{{ producto.nombre }}</td>
-            <td align="right">$ {{ producto.precio }}</td>
             <td>{{producto.categoria.nombre}}
                 <nz-badge *ngIf="producto.categoria.estado === 0" nzStatus="error" nzText="eliminada"></nz-badge>
             </td>
+            <td align="right">$ {{ producto.precio }}</td>
             <td>
                 <button (click)="edit(producto.id)" nz-button>Detalle</button>
                 <button nz-popconfirm nzPopconfirmTitle="Seguro quieres eliminar?" (nzOnConfirm)="eliminar(producto.id)" nz-button>Eliminar</button>

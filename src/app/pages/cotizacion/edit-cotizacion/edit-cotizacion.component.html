@@ -138,6 +138,7 @@
 </form>
 
 <div nz-form *ngIf="cotizacion && cotizacion.id>0">
+    <nz-alert *ngIf="cotizacion.anulado === 1" nzType="warning" nzMessage="Está cotización se encuentra anulada." nzShowIcon></nz-alert>
     <nz-form-item nz-row>
         <nz-form-label nz-col [nzSm]="6" [nzXs]="24">Fecha</nz-form-label>
         <nz-form-control nz-col [nzSm]="14" [nzXs]="24">{{cotizacion.fecha}}</nz-form-control>
@@ -193,6 +194,7 @@
     <nz-form-item style="margin-top: 15px;">
         <nz-form-control nz-col [nzSpan]="20" [nzOffset]="6">
             <button [disabled]="cargando" [nzLoading]="cargando" (click)="descargar()" nz-button nzType="primary"><i nz-icon nzType="download"></i>Descargar</button>
+            <button nz-popconfirm nzPopconfirmTitle="Seguro quieres anular?" (nzOnConfirm)="anular(cotizacion.id)" *ngIf="cotizacion.anulado === 0" [disabled]="cargando" [nzLoading]="cargando" nz-button nzDanger nzType="primary"><i nz-icon nzType="stop"></i>Anular</button>
         </nz-form-control>
     </nz-form-item>
 </div>

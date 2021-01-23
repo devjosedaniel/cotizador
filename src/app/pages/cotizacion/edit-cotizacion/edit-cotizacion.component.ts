@@ -273,9 +273,19 @@ export class EditCotizacionComponent implements OnInit {
     if(data){
       const url = window.URL.createObjectURL(data);
       const anchor = document.createElement('a');
-      anchor.download = 'cotizacion.pdf';
+      anchor.download = `cotizacion${this.cotizacion.secuencia}.pdf`;
       anchor.href = url;
       anchor.click();
     }
+  }
+  anular(id){
+    this.cotiSrv.anular(id).subscribe( (res: any) => {
+      if (res.ok === true) {
+          this.notification.create(
+            'success', 'Correcto', res.mensaje
+          );
+          this.route.navigateByUrl('/cotizacion');
+        }
+    });
   }
 }

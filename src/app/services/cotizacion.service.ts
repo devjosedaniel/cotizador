@@ -29,4 +29,7 @@ export class CotizacionService {
   generarPdf(id){
     return this.http.get(`${urlApi}/${id}/pdf`, { responseType: 'blob'});
   }
+  anular(id){
+    return this.http.delete(`${urlApi}/${id}/anular`);
+  }
 }
