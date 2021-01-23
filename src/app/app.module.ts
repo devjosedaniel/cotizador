@@ -24,6 +24,7 @@ import { CategoriaComponent } from './pages/categoria/categoria.component';
 import { EditCategoriaComponent } from './pages/categoria/edit-categoria/edit-categoria.component';
 import { EditProductoComponent } from './pages/productos/edit-producto/edit-producto.component';
 import { EditCotizacionComponent } from './pages/cotizacion/edit-cotizacion/edit-cotizacion.component';
+import { LoginComponent } from './pages/login/login.component';
 
 registerLocaleData(es);
 
@@ -38,6 +39,7 @@ registerLocaleData(es);
     EditCategoriaComponent,
     EditProductoComponent,
     EditCotizacionComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,13 +52,13 @@ registerLocaleData(es);
     NzLayoutModule,
     NzMenuModule,
     ComponentsModule,
-    ConnectionServiceModule
+    ConnectionServiceModule,
   ],
-  exports: [
-    ComponentsModule,
-    ConnectionServiceModule
+  exports: [ComponentsModule, ConnectionServiceModule],
+  providers: [
+    { provide: NZ_I18N, useValue: es_ES },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
-  providers: [{ provide: NZ_I18N, useValue: es_ES }, { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

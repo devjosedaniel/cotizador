@@ -24,6 +24,8 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
 @NgModule({
   declarations: [ErrorComponent, NoInternetComponent],
   imports: [
@@ -31,7 +33,7 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
     NzFormModule,
     NzAlertModule,
     NzResultModule,
-    NzIconModule
+    NzIconModule,
   ],
   exports: [
     NzFormModule,
@@ -57,7 +59,9 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
     NzCheckboxModule,
     NzTypographyModule,
     NzTagModule,
-    NzGridModule
-  ]
+    NzGridModule,
+    NzLayoutModule,
+    NzMenuModule,
+  ],
 })
-export class ComponentsModule { }
+export class ComponentsModule {}
