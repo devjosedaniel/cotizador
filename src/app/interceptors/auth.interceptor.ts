@@ -49,6 +49,12 @@ export class AuthInterceptor implements HttpInterceptor {
             'Hubo un error al intentar conectarse con el servidor.'
           );
         }
+        if (err.status === 500) {
+          this.notification.error(
+            'Error en Servidor',
+            'Hubo un error en el servidor.'
+          );
+        }
         return throwError(err);
       })
     );

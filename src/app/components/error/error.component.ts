@@ -8,8 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class ErrorComponent implements OnInit {
   @Input() error;
   constructor() {
-    console.log('entre');
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 }

@@ -52,7 +52,7 @@ export class EditCategoriaComponent implements OnInit {
           this.notification.create(
             'success', 'Correcto', res.mensaje
           );
-          this.r.navigateByUrl('/categoria');
+          this.r.navigateByUrl('main/categoria');
         }
       }, (err: HttpErrorResponse) => {
         this.cargando = false;
@@ -77,7 +77,7 @@ export class EditCategoriaComponent implements OnInit {
     }
   }
   onBack(): void {
-    this.r.navigateByUrl('/categoria');
+    this.r.navigateByUrl('main/categoria');
   }
 
   async getCliente(): Promise<any> {

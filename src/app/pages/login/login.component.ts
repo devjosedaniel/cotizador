@@ -4,6 +4,7 @@ import { Usuario } from '../../models/usuario';
 import { StorageService } from '../../services/storage.service';
 import { UsuarioService } from '../../services/usuario.service';
 import { Router } from '@angular/router';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,7 @@ export class LoginComponent implements OnInit {
   password?: string;
   loading = false;
   error: string;
-  constructor(private route: Router, private fb: FormBuilder, private storageSrv: StorageService, private usuarioSrv: UsuarioService) {
+  constructor(private message: NzMessageService, private route: Router, private fb: FormBuilder, private storageSrv: StorageService, private usuarioSrv: UsuarioService) {
     this.cargarRecuerdame();
   }
   usuario = new Usuario();
@@ -44,6 +45,7 @@ export class LoginComponent implements OnInit {
       await this.storageSrv.setJsonValue('token', res);
       await this.storageSrv.setJsonValue('usuario', this.usuario);
       this.route.navigateByUrl('/');
+      this.message.success(`Bienvenido ${this.usuario.usuario}`);
     }, err => {
       this.loading = false;
       this.error = err.error.mensaje;

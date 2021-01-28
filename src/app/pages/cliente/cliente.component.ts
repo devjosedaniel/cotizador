@@ -47,10 +47,10 @@ export class ClienteComponent implements OnInit {
     this.search();
   }
   edit(id: number): void {
-    this.route.navigateByUrl('/cliente/' + id);
+    this.route.navigateByUrl('main/cliente/' + id);
   }
   nuevo(): void {
-    this.route.navigateByUrl('/cliente/nuevo');
+    this.route.navigateByUrl('main/cliente/nuevo');
   }
   eliminar(id): void {
     this.clienteSrv.eliminar(id).subscribe(res => {

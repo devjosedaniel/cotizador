@@ -41,10 +41,10 @@ export class ProductosComponent implements OnInit {
     this.search();
   }
   edit(id: number): void {
-    this.route.navigateByUrl('/producto/' + id);
+    this.route.navigateByUrl('main/producto/' + id);
   }
   nuevo(): void {
-    this.route.navigateByUrl('/producto/nuevo');
+    this.route.navigateByUrl('main/producto/nuevo');
   }
   eliminar(id): void {
     this.prodSrv.eliminar(id).subscribe(res => {

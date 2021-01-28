@@ -41,10 +41,10 @@ export class CategoriaComponent implements OnInit {
     this.search();
   }
   edit(id: number): void {
-    this.route.navigateByUrl('/categoria/' + id);
+    this.route.navigateByUrl('main/categoria/' + id);
   }
   nuevo(): void {
-    this.route.navigateByUrl('/categoria/nuevo');
+    this.route.navigateByUrl('main/categoria/nuevo');
   }
   eliminar(id): void {
     this.categSrv.eliminar(id).subscribe(res => {

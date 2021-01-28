@@ -34,10 +34,10 @@ export class CotizacionComponent implements OnInit {
   }
 
   edit(id: number): void {
-    this.route.navigateByUrl('/cotizacion/' + id);
+    this.route.navigateByUrl('main/cotizacion/' + id);
   }
   nuevo(): void {
-    this.route.navigateByUrl('/cotizacion/nuevo');
+    this.route.navigateByUrl('main/cotizacion/nuevo');
   }
   search(): void {
     this.visible = false;

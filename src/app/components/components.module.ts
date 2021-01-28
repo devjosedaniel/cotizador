@@ -26,6 +26,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 @NgModule({
   declarations: [ErrorComponent, NoInternetComponent],
   imports: [
@@ -62,6 +63,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
     NzGridModule,
     NzLayoutModule,
     NzMenuModule,
+    NzMessageModule
   ],
 })
-export class ComponentsModule {}
+export class ComponentsModule { }

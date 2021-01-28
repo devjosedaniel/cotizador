@@ -82,7 +82,7 @@ export class EditProductoComponent implements OnInit {
           this.notification.create(
             'success', 'Correcto', res.mensaje
           );
-          this.r.navigateByUrl('/producto');
+          this.r.navigateByUrl('main/producto');
         }
       }, (err: HttpErrorResponse) => {
         this.cargando = false;
@@ -107,7 +107,7 @@ export class EditProductoComponent implements OnInit {
     }
   }
   onBack(): void {
-    this.r.navigateByUrl('/producto');
+    this.r.navigateByUrl('main/producto');
   }
 
   async getCliente(): Promise<any> {

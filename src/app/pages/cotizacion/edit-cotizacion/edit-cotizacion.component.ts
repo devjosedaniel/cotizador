@@ -29,8 +29,8 @@ export class EditCotizacionComponent implements OnInit {
   clientes: Cliente[] = [];
   clienteSeleccionado: Cliente = new Cliente();
   productosCategorizados: Categoria[] = [];
-  porcetantajesIva = [0,12];
-  productos: Producto[]= [];
+  porcetantajesIva = [0, 12];
+  productos: Producto[] = [];
   valor_subtotal: number = 0.00;
   valor_descuento: number = 0.00;
   valor_iva12: number = 0.00;
@@ -40,6 +40,7 @@ export class EditCotizacionComponent implements OnInit {
   parserDollar = (value: string) => value.replace('$ ', '');
   formatterPercent = (value: number) => `${value} %`;
   parserPercent = (value: string) => value.replace(' %', '');
+  rutaCotizacion = '/main/cotizacion'
   // tslint:disable-next-line: max-line-length
   constructor(private i18n: NzI18nService, private notification: NzNotificationService, private ar: ActivatedRoute, private route: Router, private fb: FormBuilder, private cotiSrv: CotizacionService, private clienteSrv: ClienteService, private productSrv: ProductoService) {
     this.crearFormulario();
@@ -52,8 +53,8 @@ export class EditCotizacionComponent implements OnInit {
     this.productSrv.categorizar().subscribe(res => {
       if (res.ok === true) {
         this.productosCategorizados.push(...res.categorias);
-        for(const cat of this.productosCategorizados){
-          for(const prod of cat.productos){
+        for (const cat of this.productosCategorizados) {
+          for (const prod of cat.productos) {
             this.productos.push(prod);
           }
         }
@@ -133,7 +134,7 @@ export class EditCotizacionComponent implements OnInit {
           this.notification.create(
             'success', 'Correcto', res.mensaje
           );
-          this.route.navigateByUrl('/cotizacion');
+          this.route.navigateByUrl(this.rutaCotizacion);
         }
       }, (err: HttpErrorResponse) => {
         this.cargando = false;
@@ -144,7 +145,7 @@ export class EditCotizacionComponent implements OnInit {
     }
   }
   onBack(): void {
-    this.route.navigateByUrl('/cotizacion');
+    this.route.navigateByUrl(this.rutaCotizacion);
   }
 
   async getCotizacion(): Promise<any> {
@@ -173,13 +174,13 @@ export class EditCotizacionComponent implements OnInit {
     this.clienteSeleccionado = cliente;
     this.validateForm.get('identificador').reset(cliente.identificador);
   }
-  quitarClienteSeleccionado(): void{
+  quitarClienteSeleccionado(): void {
     this.clienteSeleccionado = new Cliente();
   }
   consumidorFinal(): void {
-    if(this.validateForm.get('final').value === true){
+    if (this.validateForm.get('final').value === true) {
       this.validateForm.get('identificador').reset('1111111111');
-    }else{
+    } else {
       this.validateForm.get('identificador').reset('');
     }
   }
@@ -206,18 +207,18 @@ export class EditCotizacionComponent implements OnInit {
     const idproducto = this.detalles.controls[i].get('producto_id');
     const valor = this.detalles.controls[i].get('valorunitario');
     const cantidad = this.detalles.controls[i].get('cantidad');
-    if(idproducto.value>0 || idproducto.value!=null){
+    if (idproducto.value > 0 || idproducto.value != null) {
       const prod = this.productos.find(p => p.id === idproducto.value);
       // const sub = cantidad.value * parseFloat(prod.precio);
       // const valor_iva = sub * (parseFloat(iva.value)/100 );
       // const val = (sub)+(valor_iva);
       valor.reset(prod.precio);
-    }else{
+    } else {
       valor.reset('');
     }
     this.obtenerResultados();
   }
-  obtenerResultados(){
+  obtenerResultados() {
     this.valor_subtotal = 0.00;
     this.valor_iva12 = 0.00;
     this.valor_total = 0.00;
@@ -230,24 +231,24 @@ export class EditCotizacionComponent implements OnInit {
     Object.values(this.detalles.controls).forEach(control => {
       const v: number = parseFloat(control.value.valorunitario);
       const c: number = control.value.cantidad;
-      if (control.value.producto_id > 0 || control.value.producto_id != null){
-        if(control.value.iva === 12){
-          this.valor_iva12 = this.redondearValores(this.valor_iva12 + ( (v*c) * (control.value.iva/100) ));
+      if (control.value.producto_id > 0 || control.value.producto_id != null) {
+        if (control.value.iva === 12) {
+          this.valor_iva12 = this.redondearValores(this.valor_iva12 + ((v * c) * (control.value.iva / 100)));
         }
         this.valor_subtotal = this.redondearValores(this.valor_subtotal + (v * c));
       }
     });
-    if(desc.value >0){
-      this.valor_descuento = this.valor_subtotal * this.redondearValores((desc.value /100)) ;
+    if (desc.value > 0) {
+      this.valor_descuento = this.valor_subtotal * this.redondearValores((desc.value / 100));
     }
-    this.valor_total = this.redondearValores(this.valor_subtotal- this.valor_descuento + this.valor_iva12);
+    this.valor_total = this.redondearValores(this.valor_subtotal - this.valor_descuento + this.valor_iva12);
     subtotal.reset(this.redondearValores(this.valor_subtotal));
     vdesc.reset(this.redondearValores(this.valor_descuento));
     iva12.reset(this.redondearValores(this.valor_iva12));
     total.reset(this.redondearValores(this.valor_total));
   }
 
-  redondearValores(numero: number): number{
+  redondearValores(numero: number): number {
     const numeroRegexp = new RegExp('\\d\\.(\\d){' + 2 + ',}');   // Expresion regular para numeros con un cierto numero de decimales o mas
     if (numero > 0) {
       if (numeroRegexp.test('' + numero)) { // Ya que el numero tiene el numero de decimales requeridos o mas, se realiza el redondeo
@@ -256,21 +257,21 @@ export class EditCotizacionComponent implements OnInit {
         // tslint:disable-next-line: max-line-length
         return Number(numero.toFixed(2)) === 0 ? 0 : Number(numero.toFixed(2));  // En valores muy bajos, se comprueba si el numero es 0 (con el redondeo deseado), si no lo es se devuelve el numero otra vez.
       }
-    }else{
+    } else {
       return 0.00;
     }
   }
-  descargar(){
+  descargar() {
     this.cargando = true;
-    this.cotiSrv.generarPdf(this.cotizacion.id).subscribe( res => {
+    this.cotiSrv.generarPdf(this.cotizacion.id).subscribe(res => {
       this.cargando = false;
       this.configDescarga(res);
     }, err => {
       this.cargando = false;
     });
   }
-  configDescarga(data){
-    if(data){
+  configDescarga(data) {
+    if (data) {
       const url = window.URL.createObjectURL(data);
       const anchor = document.createElement('a');
       anchor.download = `cotizacion${this.cotizacion.secuencia}.pdf`;
@@ -278,14 +279,14 @@ export class EditCotizacionComponent implements OnInit {
       anchor.click();
     }
   }
-  anular(id){
-    this.cotiSrv.anular(id).subscribe( (res: any) => {
+  anular(id) {
+    this.cotiSrv.anular(id).subscribe((res: any) => {
       if (res.ok === true) {
-          this.notification.create(
-            'success', 'Correcto', res.mensaje
-          );
-          this.route.navigateByUrl('/cotizacion');
-        }
+        this.notification.create(
+          'success', 'Correcto', res.mensaje
+        );
+        this.route.navigateByUrl(this.rutaCotizacion);
+      }
     });
   }
 }

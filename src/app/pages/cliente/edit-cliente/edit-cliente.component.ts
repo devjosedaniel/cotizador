@@ -53,7 +53,7 @@ export class EditClienteComponent implements OnInit {
           this.notification.create(
             'success', 'Correcto', res.mensaje
           );
-          this.r.navigateByUrl('/cliente');
+          this.r.navigateByUrl('main/cliente');
         }
       }, (err: HttpErrorResponse) => {
         this.cargando = false;
@@ -78,7 +78,7 @@ export class EditClienteComponent implements OnInit {
     }
   }
   onBack(): void {
-    this.r.navigateByUrl('/cliente');
+    this.r.navigateByUrl('main/cliente');
   }
 
   async getCliente(): Promise<any> {
