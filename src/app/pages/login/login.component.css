@@ -15,5 +15,16 @@
      }
      
      [nz-row] {
-         height: 80%;
+         height: 100%;
+     }
+     
+     .login-main {
+         background: url('/assets/img/background-login.jpg');
+         background-repeat: no-repeat;
+         background-position: center;
+         background-size: cover;
+     }
+     
+     i {
+         cursor: pointer;
      }

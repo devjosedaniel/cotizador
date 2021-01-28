@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ConnectionService } from 'ng-connection-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-principal',
@@ -10,8 +11,8 @@ export class PrincipalComponent implements OnInit {
   isCollapsed = true;
   status = 'ONLINE';
   isConnected = true;
-
-  constructor(private connectionService: ConnectionService) {
+  ruta = '/main';
+  constructor(private connectionService: ConnectionService, private router: Router) {
     this.connectionService.monitor().subscribe((isConnected) => {
       this.isConnected = isConnected;
       if (this.isConnected) {
@@ -22,5 +23,5 @@ export class PrincipalComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 }

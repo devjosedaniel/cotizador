@@ -1,8 +1,8 @@
 <nz-layout class="app-layout">
     <nz-sider class="menu-sidebar" nzCollapsible nzWidth="256px" nzBreakpoint="xxl" [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
         <div class="sidebar-logo">
-            <a href="https://ng.ant.design/" target="_blank">
-                <img src="https://ng.ant.design/assets/img/logo.svg" alt="logo">
+            <a routerLink="/">
+                <img src="/assets/img/logo.svg" alt="logo">
                 <h1>Cotizador</h1>
             </a>
         </div>
@@ -27,22 +27,22 @@
                     </li>
                 </ul>
             </li> -->
-            <li routerLink="/cotizacion" nz-menu-item nzMatchRouter>
+            <li [routerLink]="ruta + '/cotizacion'" nz-menu-item nzMatchRouter>
                 <!-- <a>Workplace</a> -->
                 <i nz-icon nzType="team"></i>
                 <span>Cotizaciones</span>
             </li>
-            <li routerLink="/cliente" nz-menu-item nzMatchRouter>
+            <li [routerLink]="ruta + '/cliente'" nz-menu-item nzMatchRouter>
                 <!-- <a>Workplace</a> -->
                 <i nz-icon nzType="team"></i>
                 <span>Clientes</span>
             </li>
-            <li routerLink="/categoria" nz-menu-item nzMatchRouter>
+            <li [routerLink]="ruta + '/categoria'" nz-menu-item nzMatchRouter>
                 <!-- <a>Workplace</a> -->
                 <i nz-icon nzType="tag"></i>
                 <span>Categorias</span>
             </li>
-            <li routerLink="/producto" nz-menu-item nzMatchRouter>
+            <li [routerLink]="ruta + '/producto'" nz-menu-item nzMatchRouter>
                 <!-- <a>Workplace</a> -->
                 <i nz-icon nzType="tag"></i>
                 <span>Productos</span>
@@ -62,7 +62,7 @@
         </nz-header>
         <nz-content>
             <div class="inner-content">
-                <!-- <app-no-internet *ngIf="!isConnected" [conectado]="isConnected"></app-no-internet> -->
+                <app-no-internet *ngIf="!isConnected" [conectado]="isConnected"></app-no-internet>
                 <router-outlet></router-outlet>
             </div>
         </nz-content>

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Usuario } from '../../models/usuario';
+import { StorageService } from '../../services/storage.service';
+import { UsuarioService } from '../../services/usuario.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +12,11 @@ import { Usuario } from '../../models/usuario';
 })
 export class LoginComponent implements OnInit {
   validateForm!: FormGroup;
-  constructor(private fb: FormBuilder) {
+  passwordVisible = false;
+  password?: string;
+  loading = false;
+  error: string;
+  constructor(private route: Router, private fb: FormBuilder, private storageSrv: StorageService, private usuarioSrv: UsuarioService) {
     this.cargarRecuerdame();
   }
   usuario = new Usuario();
@@ -21,6 +28,7 @@ export class LoginComponent implements OnInit {
     });
   }
   submitForm(): void {
+    this.error = null;
     if (this.validateForm.invalid) {
       for (const i in this.validateForm.controls) {
         this.validateForm.controls[i].markAsDirty();
@@ -28,23 +36,36 @@ export class LoginComponent implements OnInit {
       }
       return;
     }
+    this.loading = true;
     this.usuario = this.validateForm.value;
-    this.recuerdame();
+    this.usuarioSrv.login(this.usuario).subscribe(async res => {
+      this.loading = false;
+      this.recuerdame();
+      await this.storageSrv.setJsonValue('token', res);
+      await this.storageSrv.setJsonValue('usuario', this.usuario);
+      this.route.navigateByUrl('/');
+    }, err => {
+      this.loading = false;
+      this.error = err.error.mensaje;
+    });
+
   }
   async recuerdame() {
     const res = this.validateForm.value.recuerdame;
-    await localStorage.removeItem('recuerdame');
+    // await localStorage.removeItem('recuerdame');
     if (res) {
-      await localStorage.setItem('recuerdame', JSON.stringify(this.usuario));
+      await this.storageSrv.setJsonValue('recuerdame', this.usuario);
+      // await localStorage.setItem('recuerdame', JSON.stringify(this.usuario));
     } else {
-      await localStorage.setItem(
-        'recuerdame',
-        JSON.stringify({ recuerdame: false })
-      );
+      await this.storageSrv.setJsonValue('recuerdame', { recuerdame: false });
+      // await localStorage.setItem(
+      //   'recuerdame',
+      //   JSON.stringify({ recuerdame: false })
+      // );
     }
   }
   async cargarRecuerdame() {
-    this.usuario =
-      JSON.parse(await localStorage.getItem('recuerdame')) || new Usuario();
+    // this.usuario = JSON.parse(await localStorage.getItem('recuerdame')) || new Usuario();
+    this.usuario = (await this.storageSrv.getJsonValue('recuerdame')) || new Usuario();
   }
 }

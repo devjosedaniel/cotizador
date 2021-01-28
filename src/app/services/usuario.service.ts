@@ -3,14 +3,15 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Usuario } from '../models/usuario';
 import { Router } from '@angular/router';
+import { StorageService } from './storage.service';
 const urlApi = environment.url + 'usuario';
 @Injectable({
   providedIn: 'root',
 })
 export class UsuarioService {
-  constructor(private http: HttpClient, private route: Router) {}
-  usuario;
-  auth() {}
+  constructor(private http: HttpClient, private route: Router, private storgaSrv: StorageService) { }
+  usuario = null;
+
   async validarUsuario(): Promise<boolean> {
     await this.cargarUsuario();
     return new Promise<boolean>((resolve) => {
@@ -23,9 +24,19 @@ export class UsuarioService {
     });
   }
   async cargarUsuario() {
-    this.usuario = JSON.parse(await localStorage.getItem('usuario'));
+    this.usuario = await this.storgaSrv.getJsonValue('usuario');
+    // this.usuario = JSON.parse(await localStorage.getItem('usuario'));
   }
-  guardar() {}
-  login() {}
-  logout() {}
+
+  login(usuario: Usuario) {
+    return this.http.post(`${urlApi}/auth`, usuario);
+  }
+  logout() {
+    this.removerDataUsuario();
+  }
+
+  removerDataUsuario() {
+    this.storgaSrv.removeJsonValue('token');
+    this.storgaSrv.removeJsonValue('usuario');
+  }
 }
