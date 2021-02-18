@@ -25,6 +25,7 @@ import { EditCategoriaComponent } from './pages/categoria/edit-categoria/edit-ca
 import { EditProductoComponent } from './pages/productos/edit-producto/edit-producto.component';
 import { EditCotizacionComponent } from './pages/cotizacion/edit-cotizacion/edit-cotizacion.component';
 import { LoginComponent } from './pages/login/login.component';
+import { ConfiguracionComponent } from './pages/configuracion/configuracion.component';
 
 registerLocaleData(es);
 
@@ -40,6 +41,7 @@ registerLocaleData(es);
     EditProductoComponent,
     EditCotizacionComponent,
     LoginComponent,
+    ConfiguracionComponent,
   ],
   imports: [
     BrowserModule,

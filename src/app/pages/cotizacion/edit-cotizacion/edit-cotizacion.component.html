@@ -27,6 +27,12 @@
             <label formControlName="final" nz-checkbox (click)="consumidorFinal()">Consumidor final</label>
         </nz-form-control>
     </nz-form-item>
+    <nz-form-item>
+        <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="email">Email</nz-form-label>
+        <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Por favor ingrese un email valido!">
+            <input nz-input id="email" formControlName="email">
+        </nz-form-control>
+    </nz-form-item>
     <div nz-row>
         <div nz-col [nzSpan]="14" [nzOffset]="6">
             <nz-table [nzSize]="'small'" [nzFooter]="footer" [nzShowPagination]="false" [nzData]="[{}]" #editRowTable nzBordered>

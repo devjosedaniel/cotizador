@@ -9,6 +9,7 @@ import { ProductosComponent } from '../productos/productos.component';
 import { EditProductoComponent } from '../productos/edit-producto/edit-producto.component';
 import { CategoriaComponent } from '../categoria/categoria.component';
 import { EditCategoriaComponent } from '../categoria/edit-categoria/edit-categoria.component';
+import { ConfiguracionComponent } from '../configuracion/configuracion.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,7 @@ const routes: Routes = [
       { path: 'producto/:id', component: EditProductoComponent },
       { path: 'categoria', component: CategoriaComponent },
       { path: 'categoria/:id', component: EditCategoriaComponent },
+      { path: 'config', component: ConfiguracionComponent },
     ],
   },
 ];
@@ -31,4 +33,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class PrincipalRoutingModule {}
+export class PrincipalRoutingModule { }

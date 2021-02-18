@@ -160,6 +160,7 @@ export class EditCotizacionComponent implements OnInit {
     this.validateForm = this.fb.group({
       fecha: [this.cotizacion.fecha, [Validators.required]],
       nombre: [this.cotizacion.cliente.nombre, [Validators.required]],
+      email: [this.cotizacion.cliente.email, []],
       identificador: [this.cotizacion.cliente.identificador, [Validators.required]],
       final: [false],
       detalles: this.fb.array([]),
@@ -173,6 +174,7 @@ export class EditCotizacionComponent implements OnInit {
   seleccionado(cliente: Cliente): void {
     this.clienteSeleccionado = cliente;
     this.validateForm.get('identificador').reset(cliente.identificador);
+    this.validateForm.get('email').reset(cliente.email);
   }
   quitarClienteSeleccionado(): void {
     this.clienteSeleccionado = new Cliente();

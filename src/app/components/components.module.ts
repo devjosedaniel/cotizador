@@ -27,6 +27,7 @@ import { NzGridModule } from 'ng-zorro-antd/grid';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzCardModule } from 'ng-zorro-antd/card';
 @NgModule({
   declarations: [ErrorComponent, NoInternetComponent],
   imports: [
@@ -63,7 +64,8 @@ import { NzMessageModule } from 'ng-zorro-antd/message';
     NzGridModule,
     NzLayoutModule,
     NzMenuModule,
-    NzMessageModule
+    NzMessageModule,
+    NzCardModule
   ],
 })
 export class ComponentsModule { }

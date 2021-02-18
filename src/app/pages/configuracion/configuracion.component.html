@@ -1,0 +1,64 @@
+<nz-page-header class="site-page-header" nzTitle="Configuración"></nz-page-header>
+<nz-card>
+
+    <nz-card nzType="inner" nzTitle="Empresa">
+        <form [formGroup]="empresaForm" (ngSubmit)="guardarEmpresa()" nz-form>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="5">Nombre</nz-form-label>
+                <nz-form-control nzHasFeedback [nzSpan]="14" nzErrorTip="El nombre de empresa es requerido.">
+                    <input formControlName="nombre" nz-input name="nombre" required />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="5">Telef. contacto</nz-form-label>
+                <nz-form-control nzHasFeedback [nzSpan]="14" nzErrorTip="El teléfono de empresa es requerido.">
+                    <input formControlName="telefono" nz-input name="telefono" required />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="5">Email</nz-form-label>
+                <nz-form-control nzHasFeedback [nzSpan]="14" nzErrorTip="El email de empresa es requerido.">
+                    <input formControlName="email" nz-input name="email" required />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control [nzOffset]="5" [nzSpan]="14">
+                    <button nz-button nzType="primary">Guardar</button>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </nz-card>
+    <nz-card nzType="inner" style="margin-top:16px;" nzTitle="Configuración de correo">
+        <form [formGroup]="correoForm" (ngSubmit)="guardarConfigCorreo()" nz-form>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="5">Host</nz-form-label>
+                <nz-form-control nzHasFeedback [nzSpan]="14" nzErrorTip="La dirección de host es requerido.">
+                    <input formControlName="host" nz-input name="host" required />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="5">Puerto</nz-form-label>
+                <nz-form-control nzHasFeedback [nzSpan]="14" nzErrorTip="El número de puerto es requerido.">
+                    <input formControlName="puerto" nz-input name="puerto" required />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="5">Usuario</nz-form-label>
+                <nz-form-control nzHasFeedback [nzSpan]="14" nzErrorTip="El usuario es requerido.">
+                    <input formControlName="usuario" nz-input name="usuario" required />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label [nzSpan]="5">Contraseña</nz-form-label>
+                <nz-form-control nzHasFeedback [nzSpan]="14" nzErrorTip="La contraseña es requerido.">
+                    <input formControlName="password" nz-input name="password" required />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-control [nzOffset]="5" [nzSpan]="14">
+                    <button nz-button nzType="primary">Guardar</button>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </nz-card>
+</nz-card>
